@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin:0;padding:0;}
+		li{list-style: none}
+		.tab{
+			margin:100px auto;
+			width: 350px;
+			border: 1px solid #000;
+		}
+		.tab ul{
+			overflow:hidden;
+		}
+		.tab ul li{
+			float: left;
+			margin-right: 10px;
+			margin-left: 20px;
+			cursor:pointer;
+		}
+		.tab ul li.on{
+			color:red;
+		}
+		.tab ol li{
+			display: none;
+
+		}
+		.tab ol li.on{
+			display: block
+		}
+	</style>
+	<script>
+	
+		onload=function(){
+			var mytab=new Tab('ul-li','ol-li')
+		}
+		function Tab(id1,id2){
+			this.btn=document.getElementById(id1).getElementsByTagName('li');
+			this.con=document.getElementById(id2).getElementsByTagName('li');
+			var i=0,
+				len=this.btn.length,
+				_this=this,
+				btn=this.btn,
+				con=this.con;
+			for(i=0;i<len;i++){
+				this.btn[i].index=i;
+				this.btn[i].onclick=function(idx){
+					// _this.tab(this);
+					return function(){
+						for(var k=0;k<len;k++){
+							btn[k].className='';
+							con[k].className='';
+						}
+						btn[idx].className="on";
+						con[idx].className="on";
+					}
+				}(i)
+			}
+			// this.tab=function(idx){
+			// 	for(var k=0;k<len;k++){
+			// 		this.btn[k].className='';
+			// 		this.con[k].className='';
+			// 	}
+			// 	idx.className="on";
+			// 	this.con[idx.index].className="on";
+			// }
+		}
+		// function Random(m,n){
+		// 	return (m+Math.floor((n-m+1)*Math.random()))
+		// }
+		// var o={
+		// 	a:0,
+		// 	b:0
+		// };
+		// function(){
+		// 	if(Random(7,8)==7){
+		// 		o['a']+=1;
+		// 	}else{
+		// 		o['b']+=1
+		// 	}
+		// 	console.log(o)
+		// }
+		// 
+		// debugger;
+		// var foo={n:1};
+		// var boo=foo;
+		
+		// foo.x=foo={n:3};
+		
+		// console.dir(foo.x);
+		// console.dir(boo.x);
+		
+	</script>
+</head>
+<body>
+	<div class="tab" id="tab">
+				<ul class="clearfix" id="ul-li">
+					<li class="on">公告</li>
+					<li>规则</li>
+					<li>论坛</li>
+					<li>安全</li>
+					<li>公益</li>
+				</ul>
+				<ol class="" id="ol-li">
+					<li class="on">
+						<p><a href="" class="f40">阿里CEO张勇:数据驱动的透明是平台治理的基础</a></p>
+						<p><a href="">阿里首倡打假联合公报 阿里北京卫视战略合作</a></p>
+					</li>
+					<li>
+						<p><a href="">哈哈哈哈哈哈哈哈哈哈哈哈</a></p>
+						<p><a href="">哈哈哈哈哈哈哈哈哈哈哈哈</a></p>
+					</li>
+					<li>
+						<p><a href="">嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻</a></p>
+						<p><a href="">嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻</a></p>
+					</li>
+					<li>
+						<p><a href="">嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎</a></p>
+						<p><a href="">嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎嘎</a></p>
+					</li>
+					<li>
+						<p><a href="">哇哇哇哇哇哇哇哇哇哇哇哇</a></p>
+						<p><a href="">哇哇哇哇哇哇哇哇哇哇哇哇</a></p>
+					</li>
+				</ol>
+			</div>
+</body>
+</html>

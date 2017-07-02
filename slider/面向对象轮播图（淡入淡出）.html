@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style >
+		*{margin:0;padding:0;}
+		#slider ul{list-style: none;width: 100%;height: 100%;position: absolute;}
+		#slider ol{list-style: none}
+		#slider ul li{width: 100%;height:100%;float: left;overflow:hidden;position: absolute;left:0;top:0;transition:opacity 1.5s;}
+		#slider img{position:absolute;left:50%;margin-left: -960px;}
+		#slider{height:462px ;width:100%;position: relative;overflow: hidden;margin-top: 100px;}
+		#slider span{position: absolute;width: 10%;height:100%;cursor:pointer;z-index: 2}
+		#slider .left-btn{left:0;}
+		#slider .right-btn{right:0;}
+		#slider .left-btn:before,#slider .left-btn:after{content:'';position: absolute;width:25%;height:3px;background:#fff;top:50%;left:40px;transform: translateY(-50%) rotate(-30deg);transform-origin: 1px 100%;transition: all 0.3s}
+		#slider .left-btn:after{transform: rotate(30deg)}
+		#slider .left-btn.on:after{transform:rotate(40deg);background: #f40;}
+		#slider .left-btn.on:before{transform:rotate(-40deg);background: #f40;}
+		#slider .right-btn:before,#slider .right-btn:after{content:'';position: absolute;width:25%;height:3px;background:#fff;top:50%;right:40px;transform: translateY(-50%) rotate(-30deg);transform-origin:  34px 100%;transition: all 0.3s}
+		#slider .right-btn:after{transform: rotate(30deg)}
+		#slider .right-btn.on:after{transform:rotate(40deg);background: #f40;}
+		#slider .right-btn.on:before{transform:rotate(-40deg);background: #f40;}
+		#slider h1{width: 100%;position: absolute;line-height: 50px;background:rgba(0,0,0,0.5);text-indent: 2em;font-size: 18px;font-weight:normal;bottom:0;color:#fff;z-index:2;}
+		#slider ol{position: absolute;bottom:10px;z-index:3;}
+		#slider ol.center{left:50%;transform: translateX(-50%);}
+		#slider ol.right{right:12%;}
+		#slider ol li{float: left;width: 20px;height: 20px;border-radius: 50%;background: #fff;margin-right: 10px;transition:all 0.2s;}
+		#slider ol li.on{transform:scale(1.3);background: #f40;}
+	</style>
+	<link rel="stylesheet" href="">
+	<script src="addEvent.js"></script>
+</head>
+<body>
+	<div id="slider" data-curindex="0" data-speed="2000" data-isautoplay="true" data-hastext="false" data-location="center">
+		<ul>
+			<li><a href="#"><img src="imgs/slide1.jpg" alt="111"></a></li>
+			<li><a href="##"><img src="imgs/slide2.jpg" alt="222"></a></li>
+			<li><a href="###"><img src="imgs/slide3.jpg" alt="333"></a></li>
+			<li><a href="####"><img src="imgs/slide4.jpg" alt="444"></a></li>
+			<li><a href="#####"><img src="imgs/slide5.jpg" alt="555"></a></li>
+		</ul>
+	</div>
+	<script>
+		function extend(oldsetting,updatasetting){
+			var newsetting=[];
+			for(var p in oldsetting){
+				if(updatasetting.hasOwnproterty(p)){
+					newsetting[p]=updatasetting[p];
+				}else{
+					newsetting[p]=oldsetting[p];
+				}		
+			}
+			return newsetting;
+		}
+		window.onload=function(){
+			var newsetting={
+				curindex:0,
+				speed:2000,
+				isautoplay:true,
+				hastext:false,
+				location:'center'
+			}
+			var objs=document.querySelectorAll('#slider')
+			for(var i=0;i<objs.length;i++){
+				var s=new Slider(objs[i],objs[i].dataset);
+			}
+			
+		}
+		function Slider(obj,setting){
+
+			this.curindex   = setting.curindex || 0;
+			this.speed      = setting.speed || 2000;
+			this.isautoplay = setting.isautoplay || true;
+			this.hastext    = setting.hastext || false;
+			this.location   = setting.location || 'center';
+			this.obj        = obj;
+			this.ul         = this.obj.getElementsByTagName('ul')[0];
+			this.ul_lis     = this.ul.getElementsByTagName('li');
+			this.len        = this.ul_lis.length;
+			this.ol_lis     = [];
+			var time        = null;
+			var _this       = this;
+			
+			this.createDom();
+			this.goto(this.curindex);
+			
+			
+			addEvent(this.left_btn,'click',function(){
+				_this.prev();
+			})
+			addEvent(this.right_btn,'click',function(){
+				_this.next();
+			})
+			for(var i=0;i<this.len;i++){
+				var f =function(abc){
+					return function(){
+						_this.goto(abc)
+					}
+				}(i)
+				addEvent(this.ol_lis[i],'mouseover',f)
+			}
+			if(setting.isautoplay.toString()==='true'){
+				this.autoplay();
+				addEvent(this.obj,'mouseenter',function(){
+					_this.pause();
+				})
+				addEvent(this.obj,'mouseleave',function(){
+					_this.autoplay();
+				})
+			}
+			if(setting.hastext.toString()==='false'){
+				this.h1.style.display='none';
+			}
+			addEvent(this.left_btn,'mouseenter',function(){
+				this.classList.toggle('on');
+			})
+			addEvent(this.left_btn,'mouseleave',function(){
+				this.classList.toggle('on');
+			})
+			addEvent(this.right_btn,'mouseenter',function(){
+				this.classList.toggle('on');
+			})
+			addEvent(this.right_btn,'mouseleave',function(){
+				this.classList.toggle('on');
+			})
+		}
+		Slider.prototype.createDom=function(){
+			this.h1=document.createElement('h1');
+			this.obj.appendChild(this.h1);
+
+			this.ol=document.createElement('ol');
+			for(var i=0;i<this.len;i++){
+				var ol_li=document.createElement('li');
+				this.ol_lis[i]=ol_li;
+				this.ol.appendChild(this.ol_lis[i]);				
+			}
+			if(this.location=='right'){
+				this.ol.className='right';
+			}else{
+				this.ol.className="center"
+			}
+			
+			this.obj.appendChild(this.ol);
+			this.left_btn=document.createElement('span');
+			this.left_btn.className="left-btn";
+			this.obj.appendChild(this.left_btn);
+			this.right_btn=document.createElement('span');
+			this.right_btn.className="right-btn";
+			this.obj.appendChild(this.right_btn);
+		}
+		Slider.prototype.prev=function(){
+			this.curindex--;
+			this.goto((this.curindex+this.len)%this.len)
+		}
+		Slider.prototype.next=function(){
+			this.curindex++;
+			this.goto(this.curindex%this.len)
+		}
+		Slider.prototype.goto=function(index){
+			for(var i=0;i<this.len;i++){
+				this.ul_lis[i].style.opacity=0;
+				this.ul_lis[i].style.zIndex=0;
+			}
+			this.ul_lis[index].style.opacity=1;
+			this.ul_lis[index].style.zIndex=1;
+			this.curindex=index;
+			var _this=this;
+			this.h1.innerHTML=this.ul_lis[index].getElementsByTagName('img')[0]['alt'];
+			// var speed=1;
+			// timer=setInterval(function(){
+			// 	if(_this.ul.offsetLeft===-index*_this.ul.offsetWidth/10){
+			// 		clearInterval(timer)
+			// 	}else{
+			// 		_this.ul.style.left=_this.ul.offsetLeft-speed+'px';
+			// 	}
+				
+			// },1)
+			for(var i=0;i<this.len;i++){
+				this.ol_lis[i].className='';
+			}
+			this.ol_lis[index].className='on'
+		}
+		Slider.prototype.autoplay=function(){
+			var _this=this;
+			time=setInterval(function(){
+				_this.next();
+			},this.speed)
+		}
+		Slider.prototype.pause=function(){
+			clearInterval(time)
+		}
+	
+	</script>
+</body>
+</html>
