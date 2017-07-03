@@ -1,0 +1,68 @@
+@import 'z.less';
+.reset();
+// html{
+//   font-size: 37.5px;
+// }
+@fontsize:75;
+
+.w(@width){
+    width:@width/@fontsize * 1rem;
+}
+.h(@height){
+    height:@height/@fontsize * 1rem;
+}
+.lh(@lh){
+    line-height: @lh/@fontsize *1rem;
+}
+.fs(@fs){
+    font-size: @fs/@fontsize *1rem;
+}
+.padding(@t,@r,@b,@l){
+    padding:@t/@fontsize*1rem @r/@fontsize*1rem @b/@fontsize*1rem @l/@fontsize*1rem;
+}
+.margin(@t,@r,@b,@l){
+    margin:@t/@fontsize*1rem @r/@fontsize*1rem @b/@fontsize*1rem @l/@fontsize*1rem;
+}
+.br(@w){
+  border-radius: @w/@fontsize*1rem;
+}
+.ml(@ml){
+  margin-left: @ml/@fontsize*1rem;
+}
+.mr(@mr){
+  margin-right: @mr/@fontsize*1rem;
+}
+.mt(@mt){
+  margin-top: @mt/@fontsize*1rem;
+}
+.mb(@mb){
+  margin-bottom: @mb/@fontsize*1rem;
+}
+.top(@t){
+    top:@t/@fontsize*1rem;
+}
+.bottom(@t){
+    bottom:@t/@fontsize*1rem;
+}
+.left(@t){
+    left:@t/@fontsize*1rem;
+}
+.right(@t){
+    right:@t/@fontsize*1rem;
+}
+.bgs(@l,@t){
+    background-size: @l/@fontsize*1rem @t/@fontsize*1rem;
+}
+.dis(){
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.disb(){
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.translateX(@w,@deg){
+  transform:translateX(@w/@fontsize*1rem) rotateZ(@deg*1deg);
+}
